@@ -1,0 +1,100 @@
+[
+  {
+    "id": "mqm36yzmpn9c8",
+    "name": "Apartament-r",
+    "lender": "BT",
+    "type": "imobiliar",
+    "principal": 361757,
+    "termMonths": 360,
+    "rateType": "variable",
+    "rate": 9,
+    "margin": 2.2,
+    "startDate": "2022-06-05",
+    "paymentDay": 18,
+    "extraMonthly": 0,
+    "prepayments": [],
+    "fixedYears": 5
+  },
+  {
+    "id": "mqipkep63753s",
+    "name": "Apartament",
+    "lender": "BCR",
+    "type": "imobiliar",
+    "principal": 320000,
+    "rateType": "variable",
+    "margin": 2,
+    "rate": 0,
+    "termMonths": 360,
+    "startDate": "2024-10-17",
+    "paymentDay": 15,
+    "extraMonthly": 0,
+    "prepayments": [
+      {
+        "id": "mqipkep82j83l",
+        "amount": 15000,
+        "date": "2025-12-18",
+        "mode": "term"
+      },
+      {
+        "id": "mqjq5mw06qrx8",
+        "amount": 1500,
+        "date": "2026-06-18",
+        "mode": "term"
+      },
+      {
+        "id": "mqjq8uzvm1uu7",
+        "amount": 1800,
+        "date": "2026-02-01",
+        "mode": "rate"
+      },
+      {
+        "id": "mqjq95x0zwdmq",
+        "amount": 1500,
+        "date": "2026-02-17",
+        "mode": "term"
+      },
+      {
+        "id": "mqldlig1lg53k",
+        "amount": 3000,
+        "date": "2026-06-19",
+        "mode": "term"
+      },
+      {
+        "id": "mqufhab6lupiw",
+        "amount": 450,
+        "date": "2026-06-26",
+        "mode": "term"
+      }
+    ]
+  },
+  {
+    "id": "mqipkep8cywfl",
+    "name": "Credit auto",
+    "lender": "ING",
+    "type": "auto",
+    "principal": 45000,
+    "rateType": "fixed",
+    "rate": 8.49,
+    "margin": 0,
+    "termMonths": 60,
+    "startDate": "2025-04-17",
+    "paymentDay": 5,
+    "extraMonthly": 0,
+    "prepayments": []
+  },
+  {
+    "id": "mqipkep8ohm2u",
+    "name": "Nevoi personale",
+    "lender": "Raiffeisen",
+    "type": "nevoi",
+    "principal": 20000,
+    "rateType": "fixed",
+    "rate": 11.9,
+    "margin": 0,
+    "termMonths": 36,
+    "startDate": "2025-10-17",
+    "paymentDay": 28,
+    "extraMonthly": 200,
+    "prepayments": []
+  }
+]

@@ -1,0 +1,506 @@
+[
+  {
+    "id": "mqipkep9d38ro",
+    "category": "Mâncare",
+    "amount": 110,
+    "date": "2026-05-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9eq1tp",
+    "category": "Mâncare",
+    "amount": 87,
+    "date": "2026-06-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9r0i8p",
+    "category": "Mâncare",
+    "amount": 74,
+    "date": "2026-06-10",
+    "note": ""
+  },
+  {
+    "id": "mqipkep958iez",
+    "category": "Mâncare",
+    "amount": 205,
+    "date": "2026-06-15",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9bx38t",
+    "category": "Mâncare",
+    "amount": 45,
+    "date": "2026-06-20",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9d0wcc",
+    "category": "Mâncare",
+    "amount": 145,
+    "date": "2026-06-25",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9l4l1b",
+    "category": "Transport",
+    "amount": 46,
+    "date": "2026-05-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9u3959",
+    "category": "Transport",
+    "amount": 85,
+    "date": "2026-06-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9gnu7u",
+    "category": "Transport",
+    "amount": 127,
+    "date": "2026-06-10",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9f2whp",
+    "category": "Utilități",
+    "amount": 349,
+    "date": "2026-05-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9xll16",
+    "category": "Utilități",
+    "amount": 202,
+    "date": "2026-06-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep98vuht",
+    "category": "Distracție",
+    "amount": 98,
+    "date": "2026-05-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9q1vxl",
+    "category": "Distracție",
+    "amount": 120,
+    "date": "2026-06-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep96q9x5",
+    "category": "Distracție",
+    "amount": 65,
+    "date": "2026-06-10",
+    "note": ""
+  },
+  {
+    "id": "mqipkep935kww",
+    "category": "Sănătate",
+    "amount": 74,
+    "date": "2026-05-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9pz9iu",
+    "category": "Sănătate",
+    "amount": 97,
+    "date": "2026-06-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep94vva0",
+    "category": "Cumpărături",
+    "amount": 215,
+    "date": "2026-05-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9yrqnh",
+    "category": "Cumpărături",
+    "amount": 84,
+    "date": "2026-06-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep94u9qj",
+    "category": "Mâncare",
+    "amount": 132,
+    "date": "2026-05-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9hclml",
+    "category": "Mâncare",
+    "amount": 75,
+    "date": "2026-05-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9vb3b0",
+    "category": "Mâncare",
+    "amount": 53,
+    "date": "2026-05-13",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9v8gq7",
+    "category": "Mâncare",
+    "amount": 214,
+    "date": "2026-05-18",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9sp6yt",
+    "category": "Mâncare",
+    "amount": 55,
+    "date": "2026-05-23",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9o52iu",
+    "category": "Mâncare",
+    "amount": 136,
+    "date": "2026-05-02",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9ot5es",
+    "category": "Transport",
+    "amount": 61,
+    "date": "2026-05-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9m3y75",
+    "category": "Transport",
+    "amount": 87,
+    "date": "2026-05-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9it4jr",
+    "category": "Transport",
+    "amount": 123,
+    "date": "2026-05-13",
+    "note": ""
+  },
+  {
+    "id": "mqipkep95m1eh",
+    "category": "Utilități",
+    "amount": 322,
+    "date": "2026-05-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9v3qw2",
+    "category": "Utilități",
+    "amount": 215,
+    "date": "2026-05-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9a1xww",
+    "category": "Distracție",
+    "amount": 88,
+    "date": "2026-05-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9t9yf1",
+    "category": "Distracție",
+    "amount": 123,
+    "date": "2026-05-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9702df",
+    "category": "Distracție",
+    "amount": 61,
+    "date": "2026-05-13",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9sgvkt",
+    "category": "Sănătate",
+    "amount": 77,
+    "date": "2026-05-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep93cbei",
+    "category": "Sănătate",
+    "amount": 101,
+    "date": "2026-05-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9pibtp",
+    "category": "Cumpărături",
+    "amount": 280,
+    "date": "2026-05-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep91ulhz",
+    "category": "Cumpărături",
+    "amount": 91,
+    "date": "2026-05-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep91k2zb",
+    "category": "Mâncare",
+    "amount": 111,
+    "date": "2026-04-06",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9e3j4f",
+    "category": "Mâncare",
+    "amount": 76,
+    "date": "2026-04-11",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9t4a5a",
+    "category": "Mâncare",
+    "amount": 69,
+    "date": "2026-04-16",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9pbdr5",
+    "category": "Mâncare",
+    "amount": 234,
+    "date": "2026-04-21",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9j8dok",
+    "category": "Mâncare",
+    "amount": 46,
+    "date": "2026-03-31",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9ql21e",
+    "category": "Mâncare",
+    "amount": 149,
+    "date": "2026-04-05",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9589av",
+    "category": "Transport",
+    "amount": 57,
+    "date": "2026-04-06",
+    "note": ""
+  },
+  {
+    "id": "mqipkep90lln2",
+    "category": "Transport",
+    "amount": 94,
+    "date": "2026-04-11",
+    "note": ""
+  },
+  {
+    "id": "mqipkep96tmtx",
+    "category": "Transport",
+    "amount": 106,
+    "date": "2026-04-16",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9k5qp6",
+    "category": "Utilități",
+    "amount": 360,
+    "date": "2026-04-06",
+    "note": ""
+  },
+  {
+    "id": "mqipkep993cqb",
+    "category": "Utilități",
+    "amount": 193,
+    "date": "2026-04-11",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9shsf3",
+    "category": "Distracție",
+    "amount": 112,
+    "date": "2026-04-06",
+    "note": ""
+  },
+  {
+    "id": "mqipkep94tt99",
+    "category": "Distracție",
+    "amount": 127,
+    "date": "2026-04-11",
+    "note": ""
+  },
+  {
+    "id": "mqipkep95p55j",
+    "category": "Distracție",
+    "amount": 58,
+    "date": "2026-04-16",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9dcv3x",
+    "category": "Sănătate",
+    "amount": 70,
+    "date": "2026-04-06",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9qsmei",
+    "category": "Sănătate",
+    "amount": 107,
+    "date": "2026-04-11",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9yq7la",
+    "category": "Cumpărături",
+    "amount": 290,
+    "date": "2026-04-06",
+    "note": ""
+  },
+  {
+    "id": "mqipkep91hedq",
+    "category": "Cumpărături",
+    "amount": 102,
+    "date": "2026-04-11",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9w3x14",
+    "category": "Mâncare",
+    "amount": 143,
+    "date": "2026-03-09",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9kocx6",
+    "category": "Mâncare",
+    "amount": 87,
+    "date": "2026-03-14",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9zi7n0",
+    "category": "Mâncare",
+    "amount": 62,
+    "date": "2026-03-19",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9cevuu",
+    "category": "Mâncare",
+    "amount": 231,
+    "date": "2026-03-24",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9lsvlc",
+    "category": "Mâncare",
+    "amount": 48,
+    "date": "2026-03-03",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9j02rn",
+    "category": "Mâncare",
+    "amount": 174,
+    "date": "2026-03-08",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9c4l45",
+    "category": "Transport",
+    "amount": 58,
+    "date": "2026-03-09",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9dbkft",
+    "category": "Transport",
+    "amount": 89,
+    "date": "2026-03-14",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9181uc",
+    "category": "Transport",
+    "amount": 102,
+    "date": "2026-03-19",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9x3c07",
+    "category": "Utilități",
+    "amount": 312,
+    "date": "2026-03-09",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9a4tfy",
+    "category": "Utilități",
+    "amount": 183,
+    "date": "2026-03-14",
+    "note": ""
+  },
+  {
+    "id": "mqipkep93w06t",
+    "category": "Distracție",
+    "amount": 95,
+    "date": "2026-03-09",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9nxwh7",
+    "category": "Distracție",
+    "amount": 134,
+    "date": "2026-03-14",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9a0wpf",
+    "category": "Distracție",
+    "amount": 68,
+    "date": "2026-03-19",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9813y9",
+    "category": "Sănătate",
+    "amount": 62,
+    "date": "2026-03-09",
+    "note": ""
+  },
+  {
+    "id": "mqipkep95cvc2",
+    "category": "Sănătate",
+    "amount": 137,
+    "date": "2026-03-14",
+    "note": ""
+  },
+  {
+    "id": "mqipkep99s559",
+    "category": "Cumpărături",
+    "amount": 228,
+    "date": "2026-03-09",
+    "note": ""
+  },
+  {
+    "id": "mqipkep9e9jrr",
+    "category": "Cumpărături",
+    "amount": 113,
+    "date": "2026-03-14",
+    "note": ""
+  }
+]

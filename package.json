@@ -1,0 +1,12 @@
+{
+  "name": "lifehub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LifeHub — PWA cu 5 module: credite, notițe & to-do, rețete, cheltuieli, economii.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node tools/serve.js 5173",
+    "serve": "node tools/serve.js 5173",
+    "icons": "node tools/gen-icons.js"
+  }
+}

@@ -1,0 +1,45 @@
+[
+  {
+    "id": "mqipkep9h0omy",
+    "name": "Fond de urgență",
+    "target": 15000,
+    "color": 0,
+    "deadline": "",
+    "contributions": [
+      {
+        "id": "mqipkep9xqbl5",
+        "amount": 4000,
+        "date": "2026-03-18"
+      },
+      {
+        "id": "mqipkep9nfb2b",
+        "amount": 2500,
+        "date": "2026-05-17"
+      },
+      {
+        "id": "mqipkep9dts4x",
+        "amount": 2000,
+        "date": "2026-06-17"
+      }
+    ]
+  },
+  {
+    "id": "mqipkep921rug",
+    "name": "Vacanță vară",
+    "target": 6000,
+    "color": 3,
+    "deadline": "2026-08-17",
+    "contributions": [
+      {
+        "id": "mqipkep94t23g",
+        "amount": 1500,
+        "date": "2026-04-17"
+      },
+      {
+        "id": "mqipkep9tupjo",
+        "amount": 1200,
+        "date": "2026-06-17"
+      }
+    ]
+  }
+]

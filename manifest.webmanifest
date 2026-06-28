@@ -1,0 +1,27 @@
+{
+  "name": "LifeHub — Centrul tău personal",
+  "short_name": "LifeHub",
+  "description": "Credite, notițe & to-do, rețete, statistici cheltuieli și economii — totul într-un singur loc, offline.",
+  "id": "/",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#e9ebf4",
+  "theme_color": "#e9ebf4",
+  "lang": "ro",
+  "dir": "ltr",
+  "categories": ["finance", "productivity", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Cheltuieli", "short_name": "Cheltuieli", "url": "./#stats", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Notițe & To-Do", "short_name": "Notițe", "url": "./#notes", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Economii", "short_name": "Economii", "url": "./#savings", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "mqipkep8fd9xm",
+    "title": "Listă cumpărături weekend",
+    "body": "Pentru masa de duminică.",
+    "pinned": true,
+    "color": 0,
+    "todos": [
+      {
+        "id": "mqipkep8tw65f",
+        "text": "Legume pentru ciorbă",
+        "done": true
+      },
+      {
+        "id": "mqipkep8zpkoh",
+        "text": "Pâine de casă",
+        "done": true
+      },
+      {
+        "id": "mqipkep806yad",
+        "text": "Cafea",
+        "done": true
+      }
+    ],
+    "updatedAt": "2026-06-17"
+  },
+  {
+    "id": "mqipkep84vmxb",
+    "title": "Idei cadou",
+    "body": "Aniversare mama — luna viitoare.",
+    "pinned": false,
+    "color": 2,
+    "todos": [],
+    "updatedAt": "2026-06-17"
+  }
+]

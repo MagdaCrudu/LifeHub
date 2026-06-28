@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0" />
+  <meta name="theme-color" content="#e9ebf4" />
+  <meta name="description" content="LifeHub — credite, notițe, rețete, cheltuieli și economii. Offline, instalabil." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="LifeHub" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>LifeHub</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/favicon-64.png" sizes="64x64" type="image/png" />
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png" />
+  <link rel="icon" href="icons/icon-512.png" sizes="512x512" type="image/png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- Sidebar (desktop) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true">
+          <span class="brand__ring"></span><span class="brand__dot"></span>
+        </div>
+        <div class="brand__text">
+          <strong>LifeHub</strong>
+          <small>Centrul tău personal</small>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav" aria-label="Module">
+        <button class="nav__item" data-route="dashboard"><span class="nav__icon" data-i="home"></span><span>Acasă</span></button>
+        <button class="nav__item" data-route="credits"><span class="nav__icon" data-i="credit"></span><span>Credite</span></button>
+        <button class="nav__item" data-route="notes"><span class="nav__icon" data-i="notes"></span><span>Notițe & To-Do</span></button>
+        <button class="nav__item" data-route="recipes"><span class="nav__icon" data-i="recipe"></span><span>Rețete</span></button>
+        <button class="nav__item" data-route="stats"><span class="nav__icon" data-i="chart"></span><span>Cheltuieli</span></button>
+        <button class="nav__item" data-route="savings"><span class="nav__icon" data-i="piggy"></span><span>Economii</span></button>
+      </nav>
+
+      <div class="sidebar__footer">
+        <button class="ghost-btn" id="currencyBtn" title="Monedă afișare (RON / EUR)"><span class="nav__icon" data-i="coins"></span><span>Monedă: <strong id="curLabel">RON</strong></span></button>
+        <button class="ghost-btn" id="themeBtn" title="Comută tema"><span class="nav__icon" data-i="theme"></span><span>Temă</span></button>
+        <button class="ghost-btn" id="dataBtn" title="Backup / restaurare"><span class="nav__icon" data-i="data"></span><span>Date</span></button>
+        <div class="sidebar__version" id="appVersion"></div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main" id="main">
+      <header class="topbar">
+        <button class="topbar__menu" id="menuBtn" aria-label="Meniu">
+          <span class="brand__logo" aria-hidden="true"><span class="brand__ring"></span><span class="brand__dot"></span></span>
+        </button>
+        <div class="topbar__title" id="pageTitle">Acasă</div>
+        <div class="topbar__actions" id="topActions"></div>
+      </header>
+      <div class="view" id="view" tabindex="-1"></div>
+    </main>
+
+    <!-- Bottom nav (mobile) -->
+    <nav class="tabbar" aria-label="Module" id="tabbar">
+      <button class="tab" data-route="dashboard" aria-label="Acasă" title="Acasă"><span class="nav__icon" data-i="home"></span></button>
+      <button class="tab" data-route="credits" aria-label="Credite" title="Credite"><span class="nav__icon" data-i="credit"></span></button>
+      <button class="tab" data-route="notes" aria-label="Notițe" title="Notițe"><span class="nav__icon" data-i="notes"></span></button>
+      <button class="tab" data-route="stats" aria-label="Cheltuieli" title="Cheltuieli"><span class="nav__icon" data-i="chart"></span></button>
+      <button class="tab" data-route="savings" aria-label="Economii" title="Economii"><span class="nav__icon" data-i="piggy"></span></button>
+    </nav>
+
+    <div class="scrim" id="scrim"></div>
+  </div>
+
+  <!-- Modal host -->
+  <div class="modal-root" id="modalRoot" aria-hidden="true"></div>
+  <!-- Toast host -->
+  <div class="toast-root" id="toastRoot" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

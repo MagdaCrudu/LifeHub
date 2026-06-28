@@ -1,0 +1,66 @@
+[
+  {
+    "id": "mqipkep810eve",
+    "name": "Ciorbă de legume",
+    "category": "Supe",
+    "emoji": "🥣",
+    "servings": 4,
+    "minutes": 45,
+    "favorite": true,
+    "ingredients": [
+      "2 morcovi",
+      "1 ceapă",
+      "1 ardei",
+      "100g orez",
+      "Pătrunjel",
+      "Borș"
+    ],
+    "steps": [
+      "Călește ceapa și morcovii.",
+      "Adaugă apă și legumele tăiate.",
+      "Pune orezul, fierbe 20 min.",
+      "Acrește cu borș, presară pătrunjel."
+    ]
+  },
+  {
+    "id": "mqipkep87yydz",
+    "name": "Paste cu pesto",
+    "category": "Principal",
+    "emoji": "🍝",
+    "servings": 2,
+    "minutes": 20,
+    "favorite": false,
+    "ingredients": [
+      "200g paste",
+      "4 linguri pesto",
+      "Parmezan",
+      "Busuioc"
+    ],
+    "steps": [
+      "Fierbe pastele al dente.",
+      "Amestecă cu pesto.",
+      "Presară parmezan și busuioc."
+    ]
+  },
+  {
+    "id": "mqipkep8683ed",
+    "name": "Clătite",
+    "category": "Desert",
+    "emoji": "🥞",
+    "servings": 4,
+    "minutes": 30,
+    "favorite": true,
+    "ingredients": [
+      "2 ouă",
+      "250ml lapte",
+      "150g făină",
+      "Zahăr",
+      "Sare"
+    ],
+    "steps": [
+      "Amestecă ingredientele.",
+      "Lasă aluatul 10 min.",
+      "Prăjește în tigaie."
+    ]
+  }
+]
