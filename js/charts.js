@@ -340,14 +340,14 @@ export function rataChart(canvas, months, { height = 230, fmt = (v) => Math.roun
 
 /* ---------- IRCC line — interactive (zoom in/out, pan, hover) ----------
  * `series` = [{ label, fullLabel, value, applicable }]. Returns { zoom(dir), destroy }. */
-export function irccChart(canvas, series, { height = 150, fmt = (v) => v.toFixed(2) + '%' } = {}) {
+export function irccChart(canvas, series, { height = 150, fmt = (v) => v.toFixed(2) + '%', count: initCount = 12 } = {}) {
   if (!series || !series.length) return { zoom() {}, destroy() {} };
   const { ctx, w, h } = setup(canvas, height);
   const padL = 46, padR = 14, padT = 16, padB = 24;
   const N = series.length;
   const color = PALETTE[1];
-  let count = Math.min(N, 12);
-  let start = N - count;
+  let count = Math.min(N, initCount);
+  let start = N - count; // anchor to the right → newest quarters shown by default
   let hover = null, anim = null;
 
   const clampCount = (c) => Math.max(4, Math.min(N, c));

@@ -308,6 +308,11 @@ export function amortization(c) {
   const now = new Date();
   const payDay = Math.min(28, Math.max(1, +c.paymentDay || base.getDate() || 1));
   const extraMonthly = +c.extraMonthly || +c.extra || 0;
+  // The recurring extra applies only from `extraFrom` onward (e.g. "starting from the selected
+  // date I pay X extra every month on the payment day"). If unset, it applies for the whole
+  // schedule (back-compat). Past months never get the extra — that would overstate the savings.
+  const extraFromD = c.extraFrom ? new Date(c.extraFrom + 'T00:00:00') : null;
+  const extraFromIdx = (extraFromD && !isNaN(extraFromD)) ? extraFromD.getFullYear() * 12 + extraFromD.getMonth() : -Infinity;
   const prepays = (c.prepayments || []).map((p) => { const d = new Date(p.date + 'T00:00:00'); return { amount: +p.amount || 0, mode: p.mode || 'term', t: d.getTime(), y: d.getFullYear(), m: d.getMonth() }; });
   const nowIdx = now.getFullYear() * 12 + now.getMonth();
   const startIdx = base.getFullYear() * 12 + base.getMonth();
@@ -324,11 +329,12 @@ export function amortization(c) {
   for (let m = 0; m < term && balance > 0.005; m++) {
     const md = addMonths(base, m);
     const mdIdx = startIdx + m;
+    const eM = mdIdx >= extraFromIdx ? extraMonthly : 0; // recurring extra only from extraFrom onward
     const annual = effectiveRate(c, md);
     const r = annual / 100 / 12;
     if (annual !== lastAnnual) { pmt = monthlyPayment(balance, annual, Math.max(1, remForPmt)); lastAnnual = annual; }
     const interest = balance * r;
-    let principalPart = pmt + extraMonthly - interest;
+    let principalPart = pmt + eM - interest;
     if (principalPart < 0) principalPart = 0;
     if (principalPart > balance) principalPart = balance;
     balance -= principalPart;
@@ -350,7 +356,7 @@ export function amortization(c) {
     }
     if (termPrepay) {
       // "reduce durata": keep the installment, shorten the horizon so later recomputes stay accurate
-      const hz = npers(balance, r, pmt + extraMonthly);
+      const hz = npers(balance, r, pmt + eM);
       if (isFinite(hz) && hz > 0) { remForPmt = Math.ceil(hz); horizonReset = true; }
     }
     schedule.push(balance);
@@ -363,9 +369,9 @@ export function amortization(c) {
       let snap = remaining;
       for (const p of prepays) if (p.y === md.getFullYear() && p.m === md.getMonth() && p.t <= now.getTime()) { const amt = Math.min(p.amount, snap); snap -= amt; prepaidTotal += amt; }
       remaining = Math.max(0, snap);
-      currentPmt = pmt + extraMonthly;
+      currentPmt = pmt + eM;
     } else if (m === elapsed) {
-      currentPmt = pmt + extraMonthly;
+      currentPmt = pmt + eM;
     }
     if (!horizonReset) remForPmt -= 1;
     if (remForPmt < 1) remForPmt = 1;
@@ -403,6 +409,8 @@ export function simulate(c, opts = {}) {
   const baseline = amortization(c);
   const sc = { ...c, prepayments: [...(c.prepayments || [])] };
   if (opts.extraMonthly != null) sc.extraMonthly = +opts.extraMonthly || 0;
+  // the recurring extra is paid each month from this date onward (defaults to the lump's date)
+  if (opts.extraFrom) sc.extraFrom = opts.extraFrom;
   if (opts.prepay && +opts.prepay.amount > 0 && opts.prepay.date) {
     sc.prepayments.push({ id: 'sim', amount: +opts.prepay.amount, date: opts.prepay.date, mode: opts.prepay.mode || 'term' });
   }

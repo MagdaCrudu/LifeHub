@@ -13,7 +13,7 @@ const modules = { dashboard, credits, notes, recipes, stats, savings };
 let current = 'dashboard';
 
 // App version (keep in sync with the sw.js CACHE version on each release)
-const APP_VERSION = 'v24';
+const APP_VERSION = 'v25';
 { const vEl = $('#appVersion'); if (vEl) vEl.textContent = `LifeHub ${APP_VERSION}`; }
 
 /* ---------- render ---------- */
@@ -120,16 +120,19 @@ window.addEventListener('lh:currency-cycle', cycleCurrency);
 $('#dataBtn').addEventListener('click', openDataModal);
 function openDataModal() {
   closeSidebar();
+  const info = storageInfo();
+  const where = info.mode === 'files'
+    ? `<div class="info-note"><span class="info-note__ico">${icon('info')}</span><div class="info-note__txt"><strong>Stocare în fișiere</strong>Datele se citesc și se scriu în <code>data_storage/</code> (un fișier .json per modul, editabil manual).</div></div>`
+    : `<div class="info-note"><span class="info-note__ico">${icon('info')}</span><div class="info-note__txt"><strong>Stocare privată a aplicației</strong>Datele sunt persistente pe acest dispozitiv. Pentru editare manuală folosește Export/Import.</div></div>`;
+  // the storage explanation is tucked behind an (i) button next to the title (toggles it open)
+  const infoBtn = el(`<button class="icon-btn" id="storageInfoBtn" title="Despre stocare">${icon('info')}</button>`);
   modal({
     title: 'Date & backup',
+    headExtra: infoBtn,
     body: (() => {
-      const info = storageInfo();
-      const where = info.mode === 'files'
-        ? `<div class="info-note" style="margin-bottom:16px"><span class="info-note__ico">${icon('info')}</span><div class="info-note__txt"><strong>Stocare în fișiere</strong>Datele se citesc și se scriu în <code>data_storage/</code> (un fișier .json per modul, editabil manual).</div></div>`
-        : `<div class="info-note" style="margin-bottom:16px"><span class="info-note__ico">${icon('info')}</span><div class="info-note__txt"><strong>Stocare privată a aplicației</strong>Datele sunt persistente pe acest dispozitiv. Pentru editare manuală folosește Export/Import.</div></div>`;
       const errs = info.errors ? `<p class="badge badge--bad" style="margin-bottom:14px">${icon('info')} Erori în fișiere: ${esc(info.errors.join('; '))}</p>` : '';
       return `
-      ${where}${errs}
+      <div id="storageInfoWrap" style="display:none;margin-bottom:16px">${where}</div>${errs}
       <div class="list">
         ${info.mode === 'files' ? `<button class="li" id="reloadBtn" style="text-align:left;border:1px solid var(--border);cursor:pointer">
           <span class="stat__chip">${icon('refresh')}</span>
@@ -151,6 +154,8 @@ function openDataModal() {
       </div>`;
     })(),
     onMount: ({ root, close }) => {
+      const infoWrap = $('#storageInfoWrap', root);
+      $('#storageInfoBtn', root).onclick = () => { infoWrap.style.display = infoWrap.style.display === 'none' ? '' : 'none'; };
       const reloadEl = $('#reloadBtn', root);
       if (reloadEl) reloadEl.onclick = async () => { await reloadStore(); close(); renderCurrent(); toast('Reîncărcat din fișiere', 'ok'); };
       $('#expBtn', root).onclick = () => {

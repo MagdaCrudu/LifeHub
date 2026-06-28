@@ -114,7 +114,7 @@ function openForm(existing) {
 
   modal({
     title: existing ? 'Editează credit' : 'Adaugă credit', size: 580, body: form,
-    footer: el(`<div class="row" style="width:100%;gap:10px;flex-wrap:wrap;align-items:center">${existing ? `<button class="btn btn--danger" data-delete style="white-space:nowrap" title="Șterge creditul">${icon('trash')}Șterge</button>` : ''}<span class="spacer"></span><button class="btn btn--ghost" data-cancel style="white-space:nowrap">Anulează</button><button class="btn" data-save style="white-space:nowrap">${icon('check')}Salvează</button></div>`),
+    footer: el(`<div class="row" style="width:100%;gap:10px;align-items:center;flex-wrap:nowrap">${existing ? `<button class="icon-btn icon-btn--danger" data-delete title="Șterge creditul" style="flex:none">${icon('trash')}</button>` : ''}<span class="spacer"></span><button class="btn btn--ghost" data-cancel style="white-space:nowrap">Anulează</button><button class="btn" data-save style="white-space:nowrap">${icon('check')}Salvează</button></div>`),
     onMount: ({ root, close }) => {
       $('[data-cancel]', root).onclick = close;
       const delBtn = $('[data-delete]', root);
@@ -152,7 +152,7 @@ function amountForOneMoreMonth(cur, baseAmount, date, extra, baseTermUsed) {
   const remaining = amortization(cur).remaining;
   if (!(remaining > 1) || baseTermUsed <= 1) return null;
   const target = baseTermUsed - 1;
-  const tu = (amt) => simulate(cur, { prepay: { amount: amt, date, mode: 'term' }, extraMonthly: extra }).scenario.termUsed;
+  const tu = (amt) => simulate(cur, { prepay: { amount: amt, date, mode: 'term' }, extraMonthly: extra, extraFrom: date }).scenario.termUsed;
   let lo = baseAmount, hi = baseAmount + remaining;
   if (tu(hi) > target) return null; // even paying off the whole balance won't drop another month
   for (let i = 0; i < 24 && hi - lo > 1; i++) { const mid = (lo + hi) / 2; if (tu(mid) <= target) hi = mid; else lo = mid; }
@@ -201,8 +201,9 @@ function prepaymentTool(creditId, onApply, onClose) {
     setApplyState(amount, extra);
     if (!(amount > 0 || extra > 0)) { out.innerHTML = `<p class="faint" style="font-size:12.5px;text-align:center;margin:2px 0">Introdu o sumă sau o plată lunară ca să vezi impactul.</p>`; return; }
     const baseline = amortization(cur);
-    // savings + payoff use the full what-if (lump + recurring extra)
-    const r = simulate(cur, { prepay: amount > 0 ? { amount, date, mode } : null, extraMonthly: extra });
+    // savings + payoff use the full what-if: the lump at `date`, plus the recurring extra paid
+    // every month FROM `date` onward (on the payment day) — never retroactively in past months.
+    const r = simulate(cur, { prepay: amount > 0 ? { amount, date, mode } : null, extraMonthly: extra, extraFrom: date });
     // intuitive "new monthly payment": only a 'rate' lump changes the contractual installment;
     // a 'term' lump keeps it; the recurring extra is simply added on top.
     let contractual = baseline.pmt;
@@ -211,10 +212,12 @@ function prepaymentTool(creditId, onApply, onClose) {
     const delta = newRate - baseline.pmt;
     const m = Math.max(0, r.monthsSaved || 0), yrs = Math.floor(m / 12), mo = m % 12;
     const timeStr = m <= 0 ? '—' : [yrs ? `${yrs} ${yrs === 1 ? 'an' : 'ani'}` : '', mo ? `${mo} ${mo === 1 ? 'lună' : 'luni'}` : ''].filter(Boolean).join(' ');
-    // #6: how much more (in 'term' mode) is needed to shave one extra month — shown under "Timp economisit"
+    // how much MORE lump (alone, ignoring the recurring extra) shaves one additional month —
+    // only meaningful when there is a lump in 'term' mode; shown under "Timp economisit"
     let hintSub = '';
-    if (mode === 'term' && date) {
-      const need = amountForOneMoreMonth(cur, amount, date, extra, r.scenario.termUsed);
+    if (mode === 'term' && amount > 0 && date) {
+      const lumpTerm = simulate(cur, { prepay: { amount, date, mode: 'term' } }).scenario.termUsed;
+      const need = amountForOneMoreMonth(cur, amount, date, 0, lumpTerm);
       if (need != null && need > 0) hintSub = `Încă ${money(need)} ca să scazi încă o lună`;
     }
     out.innerHTML = `<div class="grid grid--2" style="gap:10px;align-items:stretch">
@@ -260,8 +263,6 @@ function openDetail(creditId, restoreScroll) {
   const monthsIn = isNaN(startD) ? 0 : (now.getFullYear() - startD.getFullYear()) * 12 + (now.getMonth() - startD.getMonth());
   const varNow = isVar || (isMixed && monthsIn >= (+c.fixedYears || 0) * 12);
   const prepays = c.prepayments || [];
-  const due = a.nextDueDate;
-  const dueISO = due ? `${due.getFullYear()}-${String(due.getMonth() + 1).padStart(2, '0')}-${String(due.getDate()).padStart(2, '0')}` : '';
   // current installment split → mini pie + percentages
   const cb = a.breakdown[Math.min(a.paidMonths, a.breakdown.length - 1)] || { principal: 0, interest: 0 };
   const cbTot = (cb.principal || 0) + (cb.interest || 0);
@@ -320,6 +321,16 @@ function openDetail(creditId, restoreScroll) {
     <p class="muted" style="font-size:12.5px;text-align:center;margin-top:6px">Evoluția ratei lunare — trage stânga/dreapta pe grafic ca să derulezi în timp.</p>
 
     <div class="section-title" style="margin:18px 2px 10px"><h2 style="font-size:16px">Rate lunare</h2><span class="muted">${a.breakdown.length} rate</span></div>
+    <div style="margin:0 2px 12px">
+      <div style="display:flex;height:8px;border-radius:6px;overflow:hidden;background:var(--surface-2)">
+        <div style="background:var(--ok);width:${Math.round(a.paidMonths / Math.max(1, a.paidMonths + a.monthsLeft) * 100)}%"></div>
+        <div style="background:var(--bad);flex:1"></div>
+      </div>
+      <div class="row row--between" style="margin-top:7px;font-size:12px">
+        <span class="row" style="gap:6px"><span style="width:9px;height:9px;border-radius:3px;background:var(--ok);flex:none"></span><span class="muted">Plătite</span><strong>${a.paidMonths}</strong></span>
+        <span class="row" style="gap:6px"><span style="width:9px;height:9px;border-radius:3px;background:var(--bad);flex:none"></span><span class="muted">Rămase</span><strong>${a.monthsLeft}</strong></span>
+      </div>
+    </div>
     <div class="rate-table" id="rateTable">
       <div class="rate-head"><span>Luna</span><span>Rată</span><span>Principal · Dobândă</span></div>
       ${a.breakdown.map((b, i) => {
@@ -354,7 +365,6 @@ function openDetail(creditId, restoreScroll) {
       <dt>Acordat</dt><dd>${fmtDate(c.startDate)}</dd>
       <dt>Prima rată</dt><dd>${fmtDate(c.firstPaymentDate || c.startDate)}</dd>
       <dt>Ziua plății ratei</dt><dd>ziua ${a.paymentDay} a lunii</dd>
-      ${due ? `<dt>Următoarea rată</dt><dd>${fmtDate(dueISO)}</dd>` : ''}
       <dt>Rate plătite</dt><dd>${a.paidMonths} luni${yrsPar(a.paidMonths)}</dd>
       <dt>Rate rămase</dt><dd>${a.monthsLeft} luni${yrsPar(a.monthsLeft)}</dd>
       <dt>Achitare estimată</dt><dd>${monthYear(a.payoffDate)}</dd>
@@ -490,11 +500,11 @@ function irccCard() {
   const card = el(`<div class="card" style="margin-bottom:8px">
     <div class="row row--between" style="align-items:flex-start;gap:12px">
       <div style="min-width:0">
-        <div class="stat__label">${icon('trending')}IRCC aplicabil acum (${esc(ir.applies)})</div>
-        <div class="row" style="gap:8px;margin-top:6px"><div class="stat__value" style="margin:0">${ir.value.toFixed(2)}%</div>${trendArrow(irccTrend())}</div>
-        <div class="stat__sub muted" style="margin-top:8px">${esc(ir.source)} (decalaj de două trimestre)</div>
+        <div class="stat__label" style="margin:0">${icon('trending')}IRCC aplicabil acum (${esc(ir.applies)})</div>
+        <div class="row" style="gap:8px;margin-top:3px"><div class="stat__value" style="margin:0">${ir.value.toFixed(2)}%</div>${trendArrow(irccTrend())}</div>
+        <div class="stat__sub muted" style="margin-top:3px">${esc(ir.source)} (decalaj de două trimestre)</div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none">
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none">
         <button type="button" class="icon-btn icon-btn--sm" id="ircEdit" title="Editează IRCC">${icon('edit')}</button>
         <div class="seg">
           <button type="button" class="seg__btn" id="ircZoomOut" title="Micșorează">−</button>
@@ -502,13 +512,13 @@ function irccCard() {
         </div>
       </div>
     </div>
-    <div class="canvas-wrap" style="margin-top:10px"><canvas id="irccChart"></canvas></div>
+    <div class="canvas-wrap" style="margin-top:8px"><canvas id="irccChart"></canvas></div>
   </div>`);
   card._draw = () => {
     const list = getIRCC();
     const appCode = applicableIRCC().sourceCode;
     const series = list.map((e) => { const p = trimParts(e.trimestru); return { label: p.axis, fullLabel: p.full, value: e.value, applicable: e.trimestru === appCode }; });
-    const ctl = irccChart($('#irccChart', card), series, { height: 132 });
+    const ctl = irccChart($('#irccChart', card), series, { height: 168, count: 9 });
     $('#ircZoomIn', card).onclick = () => ctl.zoom(-1);
     $('#ircZoomOut', card).onclick = () => ctl.zoom(1);
   };
@@ -524,11 +534,11 @@ const qAfter = (code) => { const [y, q] = String(code).split('T').map(Number); c
 // Returns { el, getValue, setValue }.
 function quarterPicker(initialCode, onChange) {
   let [curY, curQ] = String(initialCode).split('T').map(Number);
-  const years = new Set(getIRCC().map((e) => +String(e.trimestru).split('T')[0]));
-  let nx = nextIRCCQuarter();
-  for (let i = 0; i < 8; i++) { years.add(+String(nx).split('T')[0]); nx = qAfter(nx); }
-  years.add(curY);
-  const yearList = [...years].sort((a, b) => b - a);
+  // continuous year range: from the earliest IRCC year up to ~6 years ahead (scrollable list)
+  const existingYears = getIRCC().map((e) => +String(e.trimestru).split('T')[0]).filter(Number.isFinite);
+  const minY = Math.min(curY, ...(existingYears.length ? existingYears : [curY]));
+  const maxY = Math.max(curY, new Date().getFullYear() + 6, ...(existingYears.length ? existingYears : [curY]));
+  const yearList = []; for (let y = maxY; y >= minY; y--) yearList.push(y);
 
   const root = el(`<div class="picker"><button type="button" class="picker__btn" data-trig><span data-lbl></span>${icon('arrowDown')}</button></div>`);
   hydrateIcons(root);
@@ -567,7 +577,9 @@ function quarterPicker(initialCode, onChange) {
   let open = false;
   const host = () => $('#modalRoot') || document.body;
   const onDoc = (e) => { if (!pop.contains(e.target) && !root.contains(e.target)) setOpen(false); };
-  const onScroll = () => setOpen(false);
+  // close only when something OUTSIDE the popup scrolls (e.g. the modal body) — not when the
+  // user scrolls the years list inside the popup
+  const onScroll = (e) => { if (pop.contains(e.target)) return; setOpen(false); };
   function setOpen(v) {
     if (v === open) return;
     open = v; root.classList.toggle('is-open', v);
@@ -643,11 +655,16 @@ function openIRCCManager() {
         hydrateIcons(rows);
       }
 
-      $('#ircAdd', root).onclick = () => {
-        const code = upsertIRCC(picker.getValue(), valInput.value);
-        if (!code) { toast('Trimestru sau valoare invalidă', 'bad'); return; }
-        toast(`IRCC ${trimParts(code).full} salvat`, 'ok');
-        draw();
+      $('#ircAdd', root).onclick = async () => {
+        const code = picker.getValue();
+        const val = valInput.value;
+        if (!(code && isFinite(+val) && +val > 0)) { toast('Trimestru sau valoare invalidă', 'bad'); return; }
+        const exists = getIRCC().some((e) => e.trimestru === code);
+        const ok = await confirmDialog(
+          `${exists ? 'Actualizezi' : 'Adaugi'} IRCC pentru ${trimParts(code).full} la ${(+val).toFixed(2)}%?`,
+          { danger: false, okLabel: 'Salvează' });
+        if (ok) { const saved = upsertIRCC(code, val); if (saved) toast(`IRCC ${trimParts(saved).full} salvat`, 'ok'); }
+        close && close(); openIRCCManager(); // confirm replaced this modal — rebuild it
       };
       $('[data-close-mgr]', root).onclick = close;
       syncVal();
