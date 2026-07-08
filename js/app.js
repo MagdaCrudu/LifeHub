@@ -13,7 +13,7 @@ const modules = { dashboard, credits, notes, recipes, stats, savings };
 let current = 'dashboard';
 
 // App version (keep in sync with the sw.js CACHE version on each release)
-const APP_VERSION = 'v25';
+const APP_VERSION = 'v26';
 { const vEl = $('#appVersion'); if (vEl) vEl.textContent = `LifeHub ${APP_VERSION}`; }
 
 /* ---------- render ---------- */
