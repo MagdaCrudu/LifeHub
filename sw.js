@@ -1,5 +1,5 @@
 // LifeHub service worker — offline-first cache.
-const CACHE = 'lifehub-v25';
+const CACHE = 'lifehub-v26';
 const ASSETS = [
   './',
   './index.html',
