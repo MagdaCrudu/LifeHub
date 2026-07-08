@@ -59,7 +59,7 @@ function openForm(existing) {
     </div>
     <div class="field-row">
       <div class="field"><label>Data acordării</label><input class="input" name="startDate" type="date" required value="${c.startDate}"></div>
-      <div class="field"><label class="row row--between" style="gap:8px"><span>Prima rată</span><span class="field__hint">prima lună de plată</span></label><input class="input" name="firstPaymentDate" type="date" value="${c.firstPaymentDate || c.startDate}"></div>
+      <div class="field"><label class="row row--between" style="gap:8px"><span>Prima rată</span><span class="field__hint" id="fpdHint">prima lună de plată</span></label><input class="input" name="firstPaymentDate" type="date" value="${c.firstPaymentDate || c.startDate}"></div>
     </div>
     <div class="field"><label>Ziua plății ratei (din lună)</label><input class="input" name="paymentDay" type="number" min="1" max="28" step="1" required value="${c.paymentDay || 1}"></div>
   </form>`);
@@ -84,6 +84,18 @@ function openForm(existing) {
   });
   form.dataset.type = c.type || 'imobiliar';
 
+  // Live hint under "Prima rată": days between disbursement and the first rate, and the daily
+  // interest (Actual/365) that accrues over them — mirrors the amortization engine's stub period.
+  function updStub() {
+    const s = new Date(form.startDate.value + 'T00:00:00'), f = new Date(form.firstPaymentDate.value + 'T00:00:00');
+    const days = (!isNaN(s) && !isNaN(f)) ? Math.round((f - s) / 86400000) : 0;
+    if (days <= 0) { $('#fpdHint', form).textContent = 'prima lună de plată'; return; }
+    const annual = rateType === 'variable' ? applicableIRCC().value + (+form.margin.value || 0) : (+form.rate.value || 0);
+    const est = (+form.principal.value || 0) * (annual / 100 / 365) * days;
+    $('#fpdHint', form).textContent = `${days} zile · dobândă ≈ ${money(est, true)}`;
+  }
+  ['startDate', 'firstPaymentDate', 'principal', 'rate'].forEach((n) => form[n].addEventListener('input', updStub));
+
   function applyRateType() {
     $$('[data-rt]', form).forEach((b) => b.classList.toggle('is-active', b.dataset.rt === rateType));
     const isFixed = rateType === 'fixed', isVar = rateType === 'variable', isMixed = rateType === 'mixed';
@@ -101,6 +113,7 @@ function openForm(existing) {
         <hr class="divider" style="margin:8px 0"><div class="row row--between"><span style="font-size:13px">Dobândă ${isMixed ? 'după perioada fixă' : 'curentă'}</span><strong style="color:var(--accent)">${(ir.value + margin).toFixed(2)}%</strong></div>
         ${note}`;
     }
+    updStub();
   }
   $$('[data-rt]', form).forEach((b) => b.onclick = () => { rateType = b.dataset.rt; applyRateType(); });
   form.margin.addEventListener('input', () => applyRateType());
@@ -364,6 +377,7 @@ function openDetail(creditId, restoreScroll) {
       <dt>Durată inițială</dt><dd>${c.termMonths} luni${yrsPar(c.termMonths)}</dd>
       <dt>Acordat</dt><dd>${fmtDate(c.startDate)}</dd>
       <dt>Prima rată</dt><dd>${fmtDate(c.firstPaymentDate || c.startDate)}</dd>
+      ${a.stubDays > 0 ? `<dt>Dobândă până la prima rată</dt><dd>${a.stubDays} zile · ${money(a.stubInterest, true)}</dd>` : ''}
       <dt>Ziua plății ratei</dt><dd>ziua ${a.paymentDay} a lunii</dd>
       <dt>Rate plătite</dt><dd>${a.paidMonths} luni${yrsPar(a.paidMonths)}</dd>
       <dt>Rate rămase</dt><dd>${a.monthsLeft} luni${yrsPar(a.monthsLeft)}</dd>
