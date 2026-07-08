@@ -307,6 +307,10 @@ export function amortization(c) {
   const base = isNaN(parsed) ? new Date() : parsed;
   const now = new Date();
   const payDay = Math.min(28, Math.max(1, +c.paymentDay || base.getDate() || 1));
+  // Stub (interim) period: between the disbursement date and the first payment date interest
+  // accrues DAILY (Actual/365) instead of the flat month charged on every other installment.
+  const startD = new Date((c.startDate || '') + 'T00:00:00');
+  const stubDays = (!isNaN(startD) && !isNaN(parsed)) ? Math.max(0, Math.round((parsed - startD) / 86400000)) : 0;
   const extraMonthly = +c.extraMonthly || +c.extra || 0;
   // The recurring extra applies only from `extraFrom` onward (e.g. "starting from the selected
   // date I pay X extra every month on the payment day"). If unset, it applies for the whole
@@ -325,6 +329,7 @@ export function amortization(c) {
   let lastAnnual = null, pmt = 0, remForPmt = term;
   let paidMonths = 0, interestPaid = 0, interestTotal = 0, prepaidTotal = 0, currentPmt = 0, payoffIndex = term;
   let remaining = principal; // principal still owed as of "now"
+  let stubInterest = 0; // daily-accrued interest charged with the first installment
 
   for (let m = 0; m < term && balance > 0.005; m++) {
     const md = addMonths(base, m);
@@ -333,7 +338,11 @@ export function amortization(c) {
     const annual = effectiveRate(c, md);
     const r = annual / 100 / 12;
     if (annual !== lastAnnual) { pmt = monthlyPayment(balance, annual, Math.max(1, remForPmt)); lastAnnual = annual; }
-    const interest = balance * r;
+    // First installment: interest for the actual days since disbursement, at the daily rate.
+    // The installment total stays the regular annuity — only the interest/principal split shifts.
+    const stub = m === 0 && stubDays > 0;
+    const interest = stub ? balance * (annual / 100 / 365) * stubDays : balance * r;
+    if (stub) stubInterest = round2(interest);
     let principalPart = pmt + eM - interest;
     if (principalPart < 0) principalPart = 0;
     if (principalPart > balance) principalPart = balance;
@@ -359,6 +368,9 @@ export function amortization(c) {
       const hz = npers(balance, r, pmt + eM);
       if (isFinite(hz) && hz > 0) { remForPmt = Math.ceil(hz); horizonReset = true; }
     }
+    // The stub installment's principal share differs from a plain month's, so re-amortize the
+    // remaining balance over the remaining term starting with the second installment.
+    if (stub) lastAnnual = null;
     schedule.push(balance);
     interestTotal += interest;
     if (m < elapsed) {
@@ -388,7 +400,7 @@ export function amortization(c) {
     schedule, breakdown, paidPrincipal: principal - remaining,
     monthsLeft, payoffDate: addMonths(base, Math.max(0, payoffIndex - 1)), // month of the LAST installment
     prepaidTotal, currentRate: effectiveRate(c, now), termUsed: payoffIndex,
-    paymentDay: payDay, nextDueDate,
+    paymentDay: payDay, nextDueDate, stubDays, stubInterest,
   };
 }
 
